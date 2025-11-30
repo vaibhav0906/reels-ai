@@ -198,32 +198,10 @@ section {
   border-radius: 18px;
   padding: 1.5rem;
   text-align: center;
-  background: rgba(124, 92, 255, 0.08);
-  display: grid;
-  gap: 0.35rem;
-  cursor: pointer;
-  transition: border 0.2s ease, background 0.2s ease;
-}
-
-.upload-drop:focus {
-  outline: 2px solid var(--accent);
-  outline-offset: 4px;
-}
-
-.upload-drop.dragging {
-  border-color: var(--accent);
-  background: rgba(124, 92, 255, 0.12);
-}
-
-.upload-label {
   color: var(--accent);
+  background: rgba(124, 92, 255, 0.08);
   font-weight: 700;
   letter-spacing: 0.01em;
-}
-
-.upload-status {
-  color: var(--text-muted);
-  font-size: 0.95rem;
 }
 
 .upload-meta {
