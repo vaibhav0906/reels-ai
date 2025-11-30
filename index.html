@@ -12,7 +12,7 @@
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
+  <body data-supabase-url="https://your-project.supabase.co" data-supabase-anon-key="public-anon-key">
     <header class="hero">
       <nav class="nav">
         <div class="logo">HindiClip</div>
@@ -52,8 +52,12 @@
         <div class="hero-card" id="upload">
           <div class="card-header">Upload & auto-convert</div>
           <div class="card-body upload-card">
-            <div class="upload-drop">Drag & drop or click to upload</div>
-            <div class="upload-meta">
+            <div class="upload-drop" role="button" tabindex="0">
+              <p class="upload-label">Drag & drop or click to upload</p>
+              <p class="upload-status" id="upload-status">Waiting for sign in…</p>
+            </div>
+            <input type="file" id="upload-input" accept="video/*" hidden />
+             <div class="upload-meta">
               <p>We run a GPU-accelerated Whisper base model + MoviePy renderer:</p>
               <ul>
                 <li>Detect hooks in Hindi/Hinglish speech with emoji emphasis.</li>
@@ -62,7 +66,10 @@
               </ul>
             </div>
           </div>
-          <a class="card-cta" href="#workflow">See sample output</a>
+          <div class="card-cta-group">
+            <a class="card-cta" href="#workflow">See sample output</a>
+            <p class="card-note">Sign in with Gmail, Facebook, or Insta to start uploads.</p>
+          </div>
         </div>
       </div>
     </header>
@@ -300,5 +307,123 @@
       </div>
       <p class="footer-note">© 2024 HindiClip. All rights reserved.</p>
     </footer>
+    <div class="auth-modal" id="auth-modal" aria-hidden="true">
+      <div class="auth-dialog" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+        <div class="auth-header">
+          <h3 id="auth-title">Sign in to upload</h3>
+          <button class="auth-close" id="auth-close" aria-label="Close">×</button>
+        </div>
+        <p class="auth-copy">
+          Use your social account to continue. We’ll return you here to drop your
+          Hindi/Hinglish video and run the Whisper + MoviePy pipeline.
+        </p>
+        <div class="auth-actions">
+          <button class="auth-btn" data-provider="google">Continue with Gmail</button>
+          <button class="auth-btn" data-provider="facebook">Continue with Facebook</button>
+          <button class="auth-btn" data-provider="instagram">Continue with Instagram</button>
+        </div>
+        <p class="auth-hint" id="auth-hint">Waiting for Supabase configuration…</p>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const uploadDrop = document.querySelector('.upload-drop');
+        const uploadInput = document.getElementById('upload-input');
+        const uploadStatus = document.getElementById('upload-status');
+        const authModal = document.getElementById('auth-modal');
+        const authClose = document.getElementById('auth-close');
+        const authHint = document.getElementById('auth-hint');
+        const providerButtons = document.querySelectorAll('.auth-btn');
+
+        const supabaseUrl = document.body.dataset.supabaseUrl;
+        const supabaseAnonKey = document.body.dataset.supabaseAnonKey;
+        const supabaseReady =
+          supabaseUrl &&
+          supabaseAnonKey &&
+          !supabaseUrl.includes('your-project') &&
+          !supabaseAnonKey.includes('public-anon-key');
+        const client = supabaseReady ? window.supabase.createClient(supabaseUrl, supabaseAnonKey) : null;
+
+        const setStatus = (text) => {
+          if (uploadStatus) uploadStatus.textContent = text;
+        };
+
+        const toggleModal = (open) => {
+          authModal.setAttribute('aria-hidden', !open);
+          authModal.classList.toggle('open', open);
+          if (!open) authHint.textContent = supabaseReady
+              ? 'Choose Gmail, Facebook, or Instagram to continue.'
+              : 'Add your Supabase URL and anon key to enable auth.';
+        };
+
+        const requestAuth = async () => {
+          if (!client) {
+            setStatus('Add Supabase keys to enable uploads');
+            toggleModal(true);
+            return false;
+          }
+          const { data } = await client.auth.getSession();
+          if (!data.session) {
+            setStatus('Sign in to upload your video');
+            toggleModal(true);
+            return false;
+          }
+          uploadInput.click();
+          return true;
+        };
+
+        const handleFiles = (files) => {
+          if (!files || !files.length) return;
+          const file = files[0];
+          setStatus(`Ready to upload: ${file.name}`);
+          // TODO: send file to backend or Supabase Storage.
+        };
+
+        providerButtons.forEach((btn) => {
+          btn.addEventListener('click', async () => {
+            if (!client) {
+              authHint.textContent = 'Add Supabase URL and anon key to enable sign-in.';
+              return;
+            }
+            const provider = btn.dataset.provider;
+            authHint.textContent = `Redirecting to ${provider}…`;
+            await client.auth.signInWithOAuth({ provider });
+          });
+        });
+
+        uploadDrop.addEventListener('click', requestAuth);
+        uploadDrop.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            requestAuth();
+          }
+        });
+
+        uploadDrop.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          uploadDrop.classList.add('dragging');
+        });
+
+        uploadDrop.addEventListener('dragleave', () => uploadDrop.classList.remove('dragging'));
+
+        uploadDrop.addEventListener('drop', (e) => {
+          e.preventDefault();
+          uploadDrop.classList.remove('dragging');
+          requestAuth().then((ok) => ok && handleFiles(e.dataTransfer.files));
+        });
+
+        uploadInput.addEventListener('change', (e) => handleFiles(e.target.files));
+        authClose.addEventListener('click', () => toggleModal(false));
+        authModal.addEventListener('click', (e) => {
+          if (e.target === authModal) toggleModal(false);
+        });
+
+        setStatus(supabaseReady ? 'Sign in to upload your video' : 'Add Supabase keys to enable uploads');
+        authHint.textContent = supabaseReady
+          ? 'Choose Gmail, Facebook, or Instagram to continue.'
+          : 'Add your Supabase URL and anon key to enable auth.';
+      });
+    </script>
   </body>
 </html>
