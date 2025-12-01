@@ -12,7 +12,7 @@
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
+  <body data-supabase-url="https://your-project.supabase.co" data-supabase-anon-key="public-anon-key">
     <header class="hero">
       <nav class="nav">
         <div class="logo">HindiClip</div>
@@ -91,7 +91,10 @@
               <button type="button" class="text-button" id="sign-out" hidden>Sign out</button>
             </div>
           </div>
-          <a class="card-cta" href="#workflow">See sample output</a>
+          <div class="card-cta-group">
+            <a class="card-cta" href="#workflow">See sample output</a>
+            <p class="card-note">Sign in with Gmail, Facebook, or Insta to start uploads.</p>
+          </div>
         </div>
       </div>
     </header>
