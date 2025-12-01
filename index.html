@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HindiClip — OpusClip-style reels for Hindi creators</title>
+    <title>HindiClip — Viral reels for Hindi creators</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -22,19 +22,33 @@
           <a href="#workflow">Workflow</a>
           <a href="#faq">FAQ</a>
         </div>
-        <a class="cta" href="#upload">Get early access</a>
+        <div class="nav-actions">
+          <a class="cta" href="#upload">Get early access</a>
+          <button
+            type="button"
+            class="user-pill"
+            id="user-pill"
+            hidden
+            aria-controls="user-dashboard"
+            aria-expanded="false"
+          >
+            <span class="user-avatar" id="user-avatar" aria-hidden="true">HC</span>
+            <span class="user-name" id="user-name">User</span>
+          </button>
+        </div>
       </nav>
       <div class="hero-content">
         <div class="hero-text">
           <p class="tag">Built for Hindi creators</p>
-          <h1>OpusClip-style viral reels from any Hindi video.</h1>
+          <h1>HindiClip builds viral reels from any Hindi video.</h1>
           <p class="subtitle">
-            Upload a long-form Hindi or Hinglish video and HindiClip will find
-            the hooks, transcribe with Whisper, add bold captions, and deliver a
-            ready-to-publish short under 60 seconds.
+            Upload any long Hindi or Hinglish video and HindiClip finds the punchiest bits,
+            adds bold captions, and hands back a ready-to-post short under 60 seconds.
           </p>
           <div class="hero-actions">
-            <a class="primary" href="#upload">Upload your video</a>
+            <a class="primary upload-trigger" href="#upload" data-upload-trigger="true"
+              >Upload your video</a
+            >
             <a class="secondary" href="#workflow">Preview the pipeline</a>
           </div>
           <div class="social-proof">
@@ -52,18 +66,29 @@
         <div class="hero-card" id="upload">
           <div class="card-header">Upload & auto-convert</div>
           <div class="card-body upload-card">
-            <div class="upload-drop" role="button" tabindex="0">
-              <p class="upload-label">Drag & drop or click to upload</p>
-              <p class="upload-status" id="upload-status">Waiting for sign in…</p>
+            <input type="file" id="upload-input" hidden accept="video/*" />
+            <div
+              class="upload-drop"
+              role="button"
+              tabindex="0"
+              data-upload-trigger="true"
+              aria-controls="auth-modal"
+            >
+              Drag & drop or click to upload
             </div>
-            <input type="file" id="upload-input" accept="video/*" hidden />
-             <div class="upload-meta">
-              <p>We run a GPU-accelerated Whisper base model + MoviePy renderer:</p>
+            <div class="upload-meta">
+              <p>Here’s what happens once you drop a video:</p>
               <ul>
-                <li>Detect hooks in Hindi/Hinglish speech with emoji emphasis.</li>
-                <li>Create 15-60s subclips and stitch a ≤60s compilation.</li>
-                <li>Burn bold captions with Devanagari-friendly fonts.</li>
+                <li>Spot the most exciting Hindi or Hinglish moments.</li>
+                <li>Chop them into short clips under a minute.</li>
+                <li>Add bold, scroll-stopping captions automatically.</li>
               </ul>
+            </div>
+            <div class="upload-state">
+              <p class="upload-status" id="upload-status" role="status">
+                Sign in to upload your first reel.
+              </p>
+              <button type="button" class="text-button" id="sign-out" hidden>Sign out</button>
             </div>
           </div>
           <div class="card-cta-group">
@@ -74,20 +99,200 @@
       </div>
     </header>
 
+    <section class="live-examples" id="live-examples" aria-labelledby="live-examples-heading">
+      <div class="live-examples-content">
+        <div class="live-examples-copy">
+          <p class="tag">Hindi creators live</p>
+          <h2 id="live-examples-heading">Trending reels from Insta + YouTube</h2>
+          <p>
+            See how other Hinglish creators are clipping their feeds right now. Drop your own video
+            to join the carousel.
+          </p>
+        </div>
+        <div class="live-grid" role="list">
+          <article class="live-card" role="listitem">
+            <div class="live-thumb">
+              <img
+                src="https://images.unsplash.com/photo-1506765515384-028b60a970df?auto=format&fit=crop&w=600&q=80"
+                alt="Comedy creator recording a Hindi reel"
+                loading="lazy"
+              />
+              <span class="live-pill">LIVE</span>
+              <span class="live-duration">0:42</span>
+            </div>
+            <div class="live-meta">
+              <p class="live-caption">“भाई, ये स्टार्टअप कहानी तो reel है 💥”</p>
+              <p class="live-handle">@raj.comedy • Instagram</p>
+            </div>
+          </article>
+          <article class="live-card" role="listitem">
+            <div class="live-thumb">
+              <img
+                src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80"
+                alt="Lifestyle influencer filming on phone"
+                loading="lazy"
+              />
+              <span class="live-pill youtube">LIVE</span>
+              <span class="live-duration">0:58</span>
+            </div>
+            <div class="live-meta">
+              <p class="live-caption">“दिल्ली से work-life balance टिप्स 🧘‍♀️”</p>
+              <p class="live-handle">@saanvi.daily • YouTube Shorts</p>
+            </div>
+          </article>
+          <article class="live-card" role="listitem">
+            <div class="live-thumb">
+              <img
+                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&q=80"
+                alt="News creator shooting on phone"
+                loading="lazy"
+              />
+              <span class="live-pill tiktok">LIVE</span>
+              <span class="live-duration">0:37</span>
+            </div>
+            <div class="live-meta">
+              <p class="live-caption">“आज की politics updates Hinglish में 🗞️”</p>
+              <p class="live-handle">@newswithneha • TikTok</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="profile-page" id="profile-page" hidden aria-hidden="true">
+      <div class="profile-shell">
+        <div class="profile-header">
+          <button type="button" class="text-button back-link" id="close-profile-page">
+            ← Back to HindiClip
+          </button>
+          <p class="tag small-tag">Account overview</p>
+          <h2>Creator profile</h2>
+          <p class="profile-subtitle">
+            Review your plan limits and account metadata. This page updates live as you upgrade.
+          </p>
+        </div>
+        <div class="profile-grid">
+          <article class="profile-card">
+            <h3>Plan details</h3>
+            <dl class="profile-details">
+              <div>
+                <dt>Plan type</dt>
+                <dd id="profile-plan">TRIAL</dd>
+              </div>
+              <div>
+                <dt>Valid till</dt>
+                <dd id="profile-plan-validity">—</dd>
+              </div>
+              <div>
+                <dt>Status</dt>
+                <dd id="profile-status">Signed out</dd>
+              </div>
+            </dl>
+            <button type="button" class="secondary full-width" id="profile-sign-out" disabled>
+              Sign out
+            </button>
+          </article>
+          <article class="profile-card">
+            <h3>Account info</h3>
+            <dl class="profile-details">
+              <div>
+                <dt>Name</dt>
+                <dd id="profile-name">—</dd>
+              </div>
+              <div>
+                <dt>Email</dt>
+                <dd id="profile-email">—</dd>
+              </div>
+              <div>
+                <dt>Last signed in</dt>
+                <dd id="profile-last-login">—</dd>
+              </div>
+            </dl>
+          </article>
+          <article class="profile-card">
+            <h3>Upload tools</h3>
+            <p class="profile-card-helper">
+              Select a local file or paste a public video URL. We’ll queue it instantly for HindiClip.
+            </p>
+            <form id="local-upload-form" class="upload-form">
+              <label for="local-upload-input" class="file-input-label">
+                Choose a video file
+              </label>
+              <input
+                type="file"
+                id="local-upload-input"
+                accept="video/*"
+                required
+                disabled
+              />
+              <button type="submit" class="primary full-width" disabled>
+                Upload from device
+              </button>
+              <p class="form-status" id="local-upload-status" role="status"></p>
+            </form>
+            <form id="url-upload-form" class="upload-form">
+              <label class="auth-label" for="url-upload-input">Video URL</label>
+              <input
+                type="url"
+                id="url-upload-input"
+                name="video-url"
+                placeholder="https://example.com/video.mp4"
+                required
+                disabled
+              />
+              <button type="submit" class="secondary full-width" disabled>
+                Fetch video
+              </button>
+              <p class="form-status" id="url-upload-status" role="status"></p>
+            </form>
+          </article>
+          <article class="profile-card">
+            <h3>Usage summary</h3>
+            <ul class="profile-usage">
+              <li>
+                <span>Uploads this month</span>
+                <strong id="profile-uploads-count">0</strong>
+              </li>
+              <li>
+                <span>Remaining trial clips</span>
+                <strong id="profile-trial-remaining">1</strong>
+              </li>
+              <li>
+                <span>Next billing</span>
+                <strong id="profile-next-billing">When you upgrade</strong>
+              </li>
+            </ul>
+            <button type="button" class="primary full-width" data-upload-trigger="true">
+              Upgrade plan
+            </button>
+          </article>
+        </div>
+        <div class="profile-conversions">
+          <div class="profile-conversions-header">
+            <h3>Recent conversions</h3>
+            <p>Track every reel we rendered for you across Instagram, YouTube, and TikTok.</p>
+          </div>
+          <ul class="conversion-list" id="conversion-list" aria-live="polite" aria-label="Converted videos log">
+            <li class="conversion-empty" id="conversion-empty">Sign in to see your conversions.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
     <section class="integration" id="integrations">
-      <h2>Hindi-first AI stack</h2>
+      <h2>The HindiClip toolkit</h2>
       <div class="integration-logos">
         <div class="logo-card">
-          <h3>OpenAI Whisper</h3>
-          <p>Word-level Hindi/Hinglish transcription with timestamps.</p>
+          <h3>Smart listening</h3>
+          <p>Understands Hinglish slang and notes every hook-worthy line.</p>
         </div>
         <div class="logo-card">
-          <h3>MoviePy</h3>
-          <p>Frame-perfect subclips, caption overlays, and stitched renders.</p>
+          <h3>Clean clipping</h3>
+          <p>Cuts crisp vertical shots with perfectly timed captions.</p>
         </div>
         <div class="logo-card">
-          <h3>GPU Pipeline</h3>
-          <p>CUDA-enabled servers for fast detection, rendering, and export.</p>
+          <h3>Fast exports</h3>
+          <p>Renders your reel in minutes so you can post the same day.</p>
         </div>
       </div>
     </section>
@@ -131,12 +336,6 @@
           </p>
         </article>
         <article class="feature-card">
-          <h3>Batch delivery</h3>
-          <p>
-            Output individual subclips plus a stitched “HINDI_SHORTS_COMPILATION.mp4”.
-          </p>
-        </article>
-        <article class="feature-card">
           <h3>Platform-ready exports</h3>
           <p>
             9:16 vertical renders with 30fps H.264 and AAC audio for Reels,
@@ -149,32 +348,28 @@
     <section class="workflow" id="workflow">
       <div class="section-heading">
         <h2>The fastest path from upload to Hinglish short</h2>
-        <p>Here’s what runs under the hood after you hit upload.</p>
+        <p>Here’s what happens behind the scenes after you hit upload.</p>
       </div>
       <div class="timeline">
         <div class="step">
           <div class="step-number">01</div>
-          <h3>Load & transcribe</h3>
+          <h3>Listen in Hindi</h3>
           <p>
-            Your video is loaded with MoviePy, then Whisper <code>base</code>
-            transcribes every word with timestamps—GPU acceleration by default.
+            HindiClip listens to your video, understands the tone, and marks every exciting sentence.
           </p>
         </div>
         <div class="step">
           <div class="step-number">02</div>
           <h3>Find the hooks</h3>
           <p>
-            We scan for high-energy Hindi/Hinglish phrases (वाह, यार, fire, 😂)
-            and build 15–60s subclips, with an even-spread fallback if nothing
-            spikes.
+            High-energy words like “वाह!” or “bhai!” get highlighted, and the best 15–60 second bits are clipped.
           </p>
         </div>
         <div class="step">
           <div class="step-number">03</div>
           <h3>Render & deliver</h3>
           <p>
-            Bold captions are burned in using Devanagari-friendly fonts, then we
-            save individual clips and a final compilation under 60 seconds.
+            Bold captions, emojis, and timing tweaks are added, then your reel is exported and ready to post.
           </p>
         </div>
       </div>
@@ -183,41 +378,52 @@
     <section class="pricing" id="pricing">
       <div class="section-heading">
         <h2>Fast, predictable pricing</h2>
-        <p>Hindi-first features, GPU rendering, and caption overlays included.</p>
+        <p>Pick the plan that matches your Hindi reel cadence—from a trial clip to yearly savings.</p>
       </div>
       <div class="pricing-cards">
         <article class="pricing-card">
-          <h3>Creator</h3>
-          <p class="price">$29<span>/month</span></p>
+          <h3>Trial</h3>
+          <p class="price">Free</p>
           <ul>
-            <li>30 auto-converted reels</li>
-            <li>Whisper base + captions</li>
-            <li>60s compilation export</li>
+            <li>Only 1 video per user</li>
+            <li>Smart Hindi/Hinglish captions</li>
+            <li>Watermarked export</li>
             <li>Email support</li>
           </ul>
-          <a class="primary" href="#upload">Join waitlist</a>
+          <a class="primary" href="payment.html?plan=trial">Start trial</a>
         </article>
         <article class="pricing-card highlight">
-          <h3>Studio</h3>
-          <p class="price">$79<span>/month</span></p>
+          <h3>Monthly</h3>
+          <p class="price">₹500<span>/month</span></p>
           <ul>
-            <li>120 reels with batch uploads</li>
-            <li>Brand fonts & color accents</li>
-            <li>Team seats and approvals</li>
-            <li>Slack support</li>
+            <li>Unlimited video uploads</li>
+            <li>Priority rendering queue</li>
+            <li>Custom caption themes</li>
+            <li>WhatsApp + email support</li>
           </ul>
-          <a class="primary" href="#upload">Request access</a>
+          <a class="primary" href="payment.html?plan=monthly">Subscribe monthly</a>
         </article>
         <article class="pricing-card">
-          <h3>Enterprise</h3>
-          <p class="price">Let’s chat</p>
+          <h3>Yearly</h3>
+          <p class="price">₹5,400<span>/year</span></p>
           <ul>
-            <li>Custom GPUs & private cloud</li>
-            <li>Dedicated success engineer</li>
-            <li>On-prem deployment</li>
-            <li>Usage-based pricing</li>
+            <li>10% off vs monthly plan</li>
+            <li>Unlimited uploads</li>
+            <li>Brand kit presets</li>
+            <li>Priority feature access</li>
           </ul>
-          <a class="secondary" href="#upload">Talk to sales</a>
+          <a class="secondary" href="payment.html?plan=yearly">Switch yearly</a>
+        </article>
+        <article class="pricing-card">
+          <h3>Businesses</h3>
+          <p class="price">Let’s talk</p>
+          <ul>
+            <li>Dedicated processing power</li>
+            <li>Team seats & approvals</li>
+            <li>SLA-backed support</li>
+            <li>Dedicated success manager</li>
+          </ul>
+          <a class="secondary" href="mailto:hello@hindiclip.ai">Talk to sales</a>
         </article>
       </div>
     </section>
@@ -265,17 +471,16 @@
           </p>
         </details>
         <details>
-          <summary>Do I need to set up Whisper or MoviePy?</summary>
+          <summary>Do I need to install any software?</summary>
           <p>
-            Nope. We host the GPU stack, load the Whisper base model, and render
-            captions automatically.
+            Nope. Just upload your video inside HindiClip and we take care of the clipping,
+            captions, and exports in the cloud.
           </p>
         </details>
         <details>
           <summary>How long does rendering take?</summary>
           <p>
-            Most projects render in under five minutes thanks to GPU inference
-            and parallel clip exports.
+            Most projects render in under five minutes, so you can post before the day ends.
           </p>
         </details>
         <details>
@@ -307,123 +512,770 @@
       </div>
       <p class="footer-note">© 2024 HindiClip. All rights reserved.</p>
     </footer>
-    <div class="auth-modal" id="auth-modal" aria-hidden="true">
-      <div class="auth-dialog" role="dialog" aria-modal="true" aria-labelledby="auth-title">
-        <div class="auth-header">
-          <h3 id="auth-title">Sign in to upload</h3>
-          <button class="auth-close" id="auth-close" aria-label="Close">×</button>
-        </div>
-        <p class="auth-copy">
-          Use your social account to continue. We’ll return you here to drop your
-          Hindi/Hinglish video and run the Whisper + MoviePy pipeline.
+
+    <div class="auth-modal" id="auth-modal" role="dialog" aria-modal="true" aria-hidden="true">
+      <div class="auth-dialog">
+        <button class="modal-close" id="close-auth-modal" type="button" aria-label="Close">
+          ×
+        </button>
+        <p class="tag small-tag">Secure upload</p>
+        <h3>Sign in to continue</h3>
+        <p class="auth-subtitle">
+          Choose a social login to start uploading. We support Google and Facebook accounts via
+          Supabase Auth.
         </p>
-        <div class="auth-actions">
-          <button class="auth-btn" data-provider="google">Continue with Gmail</button>
-          <button class="auth-btn" data-provider="facebook">Continue with Facebook</button>
-          <button class="auth-btn" data-provider="instagram">Continue with Instagram</button>
+        <div class="oauth-buttons">
+          <button
+            type="button"
+            class="oauth-button"
+            data-oauth-provider="google"
+            aria-label="Continue with Google"
+          >
+            <span class="oauth-icon">G</span>
+            Continue with Google
+          </button>
+          <button
+            type="button"
+            class="oauth-button"
+            data-oauth-provider="facebook"
+            aria-label="Continue with Facebook"
+          >
+            <span class="oauth-icon">f</span>
+            Continue with Facebook
+          </button>
+          <button
+            type="button"
+            class="oauth-button coming-soon"
+            data-disabled="true"
+            aria-disabled="true"
+            title="Instagram OAuth is not available through Supabase yet"
+          >
+            <span class="oauth-icon">IG</span>
+            Continue with Instagram (coming soon)
+          </button>
         </div>
-        <p class="auth-hint" id="auth-hint">Waiting for Supabase configuration…</p>
+        <p class="auth-note">
+          Instagram login is not yet supported by Supabase Auth. Use Google or Facebook for now.
+        </p>
+        <div class="auth-divider">
+          <span></span>
+          <p>or use email</p>
+          <span></span>
+        </div>
+        <form id="email-auth-form" class="auth-form">
+          <label class="auth-label" for="auth-email">Email address</label>
+          <input type="email" id="auth-email" name="email" placeholder="you@example.com" required />
+          <button type="submit" class="primary full-width">Send magic link</button>
+        </form>
+        <p class="auth-message" id="auth-message" role="status" aria-live="polite"></p>
+        <p class="auth-helper">
+          Configure your Supabase URL and anon key via <code>window.SUPABASE_URL</code> and
+          <code>window.SUPABASE_ANON_KEY</code> or by editing the script below.
+        </p>
       </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        const uploadDrop = document.querySelector('.upload-drop');
-        const uploadInput = document.getElementById('upload-input');
-        const uploadStatus = document.getElementById('upload-status');
-        const authModal = document.getElementById('auth-modal');
-        const authClose = document.getElementById('auth-close');
-        const authHint = document.getElementById('auth-hint');
-        const providerButtons = document.querySelectorAll('.auth-btn');
 
-        const supabaseUrl = document.body.dataset.supabaseUrl;
-        const supabaseAnonKey = document.body.dataset.supabaseAnonKey;
-        const supabaseReady =
-          supabaseUrl &&
-          supabaseAnonKey &&
-          !supabaseUrl.includes('your-project') &&
-          !supabaseAnonKey.includes('public-anon-key');
-        const client = supabaseReady ? window.supabase.createClient(supabaseUrl, supabaseAnonKey) : null;
+    <script type="module">
+      import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.44.2';
 
-        const setStatus = (text) => {
-          if (uploadStatus) uploadStatus.textContent = text;
-        };
+      const SUPABASE_URL =
+        window.SUPABASE_URL || 'https://gvttkycxbuodqwhbbsee.supabase.co';
+      const SUPABASE_ANON_KEY =
+        window.SUPABASE_ANON_KEY ||
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd2dHRreWN4YnVvZHF3aGJic2VlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ1MTMwMTEsImV4cCI6MjA4MDA4OTAxMX0.sr4wj8MBbXYok6LiRNnvUvr9sURVwXDphX0bJZVfJhY';
+      const redirectUrl = `${window.location.origin}${window.location.pathname}`;
+      const hasValidSupabaseConfig = SUPABASE_URL && SUPABASE_ANON_KEY;
+      const supabase = hasValidSupabaseConfig ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
-        const toggleModal = (open) => {
-          authModal.setAttribute('aria-hidden', !open);
-          authModal.classList.toggle('open', open);
-          if (!open) authHint.textContent = supabaseReady
-              ? 'Choose Gmail, Facebook, or Instagram to continue.'
-              : 'Add your Supabase URL and anon key to enable auth.';
-        };
+      const uploadTriggers = document.querySelectorAll('[data-upload-trigger]');
+      const uploadDrop = document.querySelector('.upload-drop');
+      const heroFileInput = document.getElementById('upload-input');
+      const authModal = document.getElementById('auth-modal');
+      const closeModalButton = document.getElementById('close-auth-modal');
+      const authForm = document.getElementById('email-auth-form');
+      const authMessage = document.getElementById('auth-message');
+      const oauthButtons = document.querySelectorAll('[data-oauth-provider]');
+      const uploadStatus = document.getElementById('upload-status');
+      const signOutButton = document.getElementById('sign-out');
+      const userPill = document.getElementById('user-pill');
+      const userAvatar = document.getElementById('user-avatar');
+      const userNameLabel = document.getElementById('user-name');
+      const profilePage = document.getElementById('profile-page');
+      const closeProfilePageButton = document.getElementById('close-profile-page');
+      const profilePlan = document.getElementById('profile-plan');
+      const profilePlanValidity = document.getElementById('profile-plan-validity');
+      const profileStatus = document.getElementById('profile-status');
+      const profileName = document.getElementById('profile-name');
+      const profileEmail = document.getElementById('profile-email');
+      const profileLastLogin = document.getElementById('profile-last-login');
+      const profileUploadsCount = document.getElementById('profile-uploads-count');
+      const profileTrialRemaining = document.getElementById('profile-trial-remaining');
+      const profileNextBilling = document.getElementById('profile-next-billing');
+      const profileSignOutButton = document.getElementById('profile-sign-out');
+      const conversionList = document.getElementById('conversion-list');
+      const conversionEmpty = document.getElementById('conversion-empty');
+      const localUploadForm = document.getElementById('local-upload-form');
+      const localUploadInput = document.getElementById('local-upload-input');
+      const localUploadStatus = document.getElementById('local-upload-status');
+      const localUploadButton = localUploadForm?.querySelector('button[type="submit"]');
+      const urlUploadForm = document.getElementById('url-upload-form');
+      const urlUploadInput = document.getElementById('url-upload-input');
+      const urlUploadStatus = document.getElementById('url-upload-status');
+      const urlUploadButton = urlUploadForm?.querySelector('button[type="submit"]');
+      let currentSession = null;
+      const fallbackConversions = [
+        {
+          id: 'hc-001',
+          title: 'standup_snippet.mov',
+          platform: 'Instagram Reels',
+          duration: '0:42',
+          status: 'Completed',
+          finishedAt: '2024-09-10T09:24:00Z',
+        },
+        {
+          id: 'hc-002',
+          title: 'podcast_hook.mp4',
+          platform: 'YouTube Shorts',
+          duration: '0:55',
+          status: 'Completed',
+          finishedAt: '2024-09-09T14:02:00Z',
+        },
+        {
+          id: 'hc-003',
+          title: 'news_flash.mov',
+          platform: 'TikTok',
+          duration: '0:37',
+          status: 'Queued',
+          finishedAt: '2024-09-09T13:50:00Z',
+        },
+      ];
+      let currentConversions = [];
+      const addConversionRecord = (record) => {
+        currentConversions = [record, ...currentConversions].slice(0, 10);
+        renderConversions(currentConversions, Boolean(currentSession));
+      };
+      const updateConversionRecord = (id, updates) => {
+        let hasChanges = false;
+        currentConversions = currentConversions.map((item) => {
+          if (item.id !== id) return item;
+          hasChanges = true;
+          return { ...item, ...updates };
+        });
+        if (hasChanges) {
+          renderConversions(currentConversions, Boolean(currentSession));
+        }
+      };
 
-        const requestAuth = async () => {
-          if (!client) {
-            setStatus('Add Supabase keys to enable uploads');
-            toggleModal(true);
-            return false;
+      const cleanOAuthParams = () => {
+        if (!window.history?.replaceState) return;
+        window.history.replaceState({}, document.title, redirectUrl);
+      };
+
+      const setUploadStatus = (message, variant = 'muted') => {
+        if (!uploadStatus) return;
+        uploadStatus.textContent = message;
+        uploadStatus.classList.remove('success', 'error');
+        if (variant === 'success') uploadStatus.classList.add('success');
+        if (variant === 'error') uploadStatus.classList.add('error');
+      };
+
+      const setAuthMessage = (message = '', variant) => {
+        if (!authMessage) return;
+        authMessage.textContent = message;
+        authMessage.classList.remove('success', 'error');
+        if (variant === 'success') authMessage.classList.add('success');
+        if (variant === 'error') authMessage.classList.add('error');
+      };
+
+      const setFormStatus = (element, message = '', variant = 'muted') => {
+        if (!element) return;
+        element.textContent = message;
+        element.classList.remove('success', 'error');
+        if (variant === 'success') element.classList.add('success');
+        if (variant === 'error') element.classList.add('error');
+      };
+
+      const toggleModal = (open) => {
+        if (!authModal) return;
+        authModal.classList.toggle('is-open', open);
+        authModal.setAttribute('aria-hidden', open ? 'false' : 'true');
+        if (!open) {
+          setAuthMessage('');
+        }
+      };
+
+      const getDisplayName = (user) => {
+        if (!user) return 'Creator';
+        return (
+          user.user_metadata?.full_name ||
+          user.user_metadata?.name ||
+          user.email?.split('@')[0] ||
+          'Creator'
+        );
+      };
+
+      const getInitials = (name = '') => {
+        const initials = name
+          .split(' ')
+          .filter(Boolean)
+          .slice(0, 2)
+          .map((part) => part[0])
+          .join('')
+          .toUpperCase();
+        return initials || 'HC';
+      };
+
+      const toggleUserPill = (visible) => {
+        if (!userPill) return;
+        userPill.hidden = !visible;
+        if (!visible) {
+          userPill.setAttribute('aria-expanded', 'false');
+        }
+      };
+
+      const setUploadToolsEnabled = (enabled) => {
+        if (localUploadInput) localUploadInput.disabled = !enabled;
+        if (localUploadButton) localUploadButton.disabled = !enabled;
+        if (urlUploadInput) urlUploadInput.disabled = !enabled;
+        if (urlUploadButton) urlUploadButton.disabled = !enabled;
+      };
+
+      setUploadToolsEnabled(false);
+
+      const formatFileSize = (bytes = 0) => {
+        if (!Number.isFinite(bytes)) return '0 B';
+        const units = ['B', 'KB', 'MB', 'GB'];
+        let size = bytes;
+        let index = 0;
+        while (size >= 1024 && index < units.length - 1) {
+          size /= 1024;
+          index += 1;
+        }
+        const precision = size >= 10 || index === 0 ? 0 : 1;
+        return `${size.toFixed(precision)} ${units[index]}`;
+      };
+
+      const startLocalUpload = (file) => {
+        if (!file) return;
+        const maxSize = 2 * 1024 * 1024 * 1024;
+        if (file.size > maxSize) {
+          setFormStatus(localUploadStatus, 'Please choose a video under 2 GB.', 'error');
+          setUploadStatus('Please choose a video under 2 GB.', 'error');
+          return;
+        }
+        const sizeLabel = formatFileSize(file.size);
+        setFormStatus(localUploadStatus, `Uploading ${file.name} (${sizeLabel})...`);
+        setUploadStatus(`Uploading ${file.name} (${sizeLabel})...`, 'success');
+        const jobId = `local-${Date.now()}`;
+        addConversionRecord({
+          id: jobId,
+          title: file.name,
+          platform: 'Local upload',
+          duration: '0:45',
+          status: 'Queued',
+          finishedAt: new Date().toISOString(),
+        });
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            const email = currentSession?.user?.email || 'you';
+            setFormStatus(
+              localUploadStatus,
+              `Queued ${file.name}. We will email ${email} when rendering finishes.`,
+              'success'
+            );
+            setUploadStatus(
+              `Queued ${file.name}. Drop another file or import a URL while HindiClip works on it.`,
+              'success'
+            );
+            if (localUploadInput) localUploadInput.value = '';
+            updateConversionRecord(jobId, {
+              status: 'Completed',
+              finishedAt: new Date().toISOString(),
+              platform: 'HindiClip render',
+            });
+            resolve();
+          }, 1500);
+        });
+      };
+
+      const isValidVideoUrl = (value) => {
+        try {
+          const parsed = new URL(value);
+          return parsed.protocol === 'https:' || parsed.protocol === 'http:';
+        } catch {
+          return false;
+        }
+      };
+
+      const processUrlUpload = (url) =>
+        new Promise((resolve) => {
+          let hostname = 'your source';
+          try {
+            hostname = new URL(url).hostname;
+          } catch {
+            // ignore invalid URL here; it is validated earlier
           }
-          const { data } = await client.auth.getSession();
-          if (!data.session) {
-            setStatus('Sign in to upload your video');
-            toggleModal(true);
-            return false;
+          const jobId = `url-${Date.now()}`;
+          addConversionRecord({
+            id: jobId,
+            title: hostname,
+            platform: 'Remote import',
+            duration: '0:58',
+            status: 'Queued',
+            finishedAt: new Date().toISOString(),
+          });
+          setTimeout(() => {
+            const email = currentSession?.user?.email || 'you';
+            setFormStatus(
+              urlUploadStatus,
+              `Fetched ${hostname}. We'll email ${email} when the clips are ready.`,
+              'success'
+            );
+            setUploadStatus('Video imported successfully. We will notify you when clips are ready.', 'success');
+            if (urlUploadInput) urlUploadInput.value = '';
+            updateConversionRecord(jobId, {
+              status: 'Completed',
+              finishedAt: new Date().toISOString(),
+              platform: hostname,
+            });
+            resolve();
+          }, 1500);
+        });
+
+      const getPlanDetails = (user) => {
+        const planSource =
+          user?.user_metadata?.plan ||
+          user?.user_metadata?.subscription ||
+          user?.app_metadata?.plan ||
+          user?.app_metadata?.subscription;
+        const normalizedPlan = `${planSource || 'TRIAL'}`.trim().toUpperCase();
+        const isPaid = normalizedPlan === 'PAID' || normalizedPlan === 'PRO' || normalizedPlan === 'STUDIO';
+        const displayPlan = isPaid ? 'PAID' : 'TRIAL';
+        const rawValidity =
+          user?.user_metadata?.plan_valid_until ||
+          user?.user_metadata?.planValidUntil ||
+          user?.app_metadata?.plan_valid_until;
+        if (!isPaid) {
+          return { displayPlan, validUntilLabel: '—' };
+        }
+        if (!rawValidity) {
+          return { displayPlan, validUntilLabel: 'Pending' };
+        }
+        const date = new Date(rawValidity);
+        if (Number.isNaN(date.getTime())) {
+          return { displayPlan, validUntilLabel: rawValidity };
+        }
+        const validUntilLabel = date.toLocaleDateString(undefined, {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+        });
+        return { displayPlan, validUntilLabel };
+      };
+
+      const formatRelativeTime = (value) => {
+        if (!value) return 'Just now';
+        const target = new Date(value);
+        if (Number.isNaN(target.getTime())) return value;
+        const elapsed = Date.now() - target.getTime();
+        const minutes = Math.floor(Math.abs(elapsed) / 60000);
+        if (minutes < 1) return 'Just now';
+        if (minutes < 60) return `${minutes}m ago`;
+        const hours = Math.floor(minutes / 60);
+        if (hours < 24) return `${hours}h ago`;
+        const days = Math.floor(hours / 24);
+        return `${days}d ago`;
+      };
+
+      const getConvertedVideos = (user, metadata) => {
+        const stored = user?.user_metadata?.conversions;
+        if (Array.isArray(stored) && stored.length) {
+          return stored;
+        }
+        return metadata.displayPlan === 'PAID' ? fallbackConversions : [];
+      };
+
+      const clearConversions = () => {
+        if (!conversionList) return;
+        const cards = conversionList.querySelectorAll('.conversion-card');
+        cards.forEach((card) => card.remove());
+      };
+
+      const renderConversions = (items = [], isSignedIn = false) => {
+        if (!conversionList) return;
+        clearConversions();
+        if (!items.length) {
+          if (conversionEmpty) {
+            conversionEmpty.hidden = false;
+            conversionEmpty.textContent = isSignedIn
+              ? 'No conversions yet. Upload a video to see it here.'
+              : 'Sign in to see your conversions.';
           }
-          uploadInput.click();
-          return true;
-        };
+          return;
+        }
+        if (conversionEmpty) {
+          conversionEmpty.hidden = true;
+        }
+        items.forEach((item) => {
+          const li = document.createElement('li');
+          li.className = 'conversion-card';
+          const statusClass = item.status?.toLowerCase() === 'queued' ? 'pending' : 'success';
+          li.innerHTML = `
+            <div class="conversion-header">
+              <p class="conversion-title">${item.title || 'Untitled video'}</p>
+              <span class="conversion-status ${statusClass}">${item.status || 'Completed'}</span>
+            </div>
+            <div class="conversion-meta">
+              <p>${item.platform || 'Instagram Reels'} • ${item.duration || '0:45'}</p>
+              <p>${formatRelativeTime(item.finishedAt)}</p>
+            </div>
+          `;
+          conversionList.appendChild(li);
+        });
+      };
 
-        const handleFiles = (files) => {
-          if (!files || !files.length) return;
-          const file = files[0];
-          setStatus(`Ready to upload: ${file.name}`);
-          // TODO: send file to backend or Supabase Storage.
+      const getUsageStats = (user, metadata) => {
+        const uploads = user?.user_metadata?.uploads_this_month ?? (metadata.displayPlan === 'TRIAL' ? '0' : '—');
+        const remainingTrial = user?.user_metadata?.trial_remaining ?? (metadata.displayPlan === 'TRIAL' ? '1' : '0');
+        let nextBilling = user?.user_metadata?.next_billing;
+        if (!nextBilling) {
+          nextBilling =
+            metadata.displayPlan === 'PAID'
+              ? metadata.validUntilLabel !== '—'
+                ? metadata.validUntilLabel
+                : 'Pending billing date'
+              : 'When you upgrade';
+        }
+        return {
+          uploads,
+          remainingTrial,
+          nextBilling,
         };
+      };
 
-        providerButtons.forEach((btn) => {
-          btn.addEventListener('click', async () => {
-            if (!client) {
-              authHint.textContent = 'Add Supabase URL and anon key to enable sign-in.';
-              return;
+      const formatLastLogin = (value) => {
+        if (!value) return '—';
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return value;
+        return `${date.toLocaleDateString(undefined, {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric',
+        })} · ${date.toLocaleTimeString(undefined, {
+          hour: '2-digit',
+          minute: '2-digit',
+        })}`;
+      };
+
+      const ensureSession = async () => {
+        if (currentSession) return currentSession;
+        if (!supabase) return null;
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
+        if (session) {
+          updateAuthState(session);
+        }
+        return session;
+      };
+
+      const openProfilePage = () => {
+        if (!profilePage) return;
+        profilePage.hidden = false;
+        profilePage.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('is-profile-open');
+        userPill?.setAttribute('aria-expanded', 'true');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
+
+      const closeProfilePage = () => {
+        if (!profilePage) return;
+        profilePage.hidden = true;
+        profilePage.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('is-profile-open');
+        userPill?.setAttribute('aria-expanded', 'false');
+      };
+
+      const handleOAuthRedirect = async () => {
+        if (!supabase) return;
+        const hash = window.location.hash || '';
+        const search = new URLSearchParams(window.location.search);
+        const hasOAuthTokens =
+          hash.includes('access_token=') ||
+          search.has('code') ||
+          search.has('error_description');
+        if (!hasOAuthTokens) return;
+        const {
+          data: { session },
+          error,
+        } = await supabase.auth.getSessionFromUrl({ storeSession: true });
+        if (error) {
+          setUploadStatus('Authentication failed. Please try again.', 'error');
+          setAuthMessage(error.message, 'error');
+          cleanOAuthParams();
+          return;
+        }
+        updateAuthState(session);
+        cleanOAuthParams();
+      };
+
+      const handleUploadRequest = async () => {
+        if (!supabase) {
+          setUploadStatus('Add your Supabase credentials to enable uploads.', 'error');
+          return;
+        }
+        const session = await ensureSession();
+        if (session) {
+          setUploadStatus('Ready for your next upload. Drop a video to start processing.', 'success');
+          heroFileInput?.click();
+          return;
+        }
+        toggleModal(true);
+      };
+
+      const trapUploadTriggers = () => {
+        uploadTriggers.forEach((trigger) => {
+          const invoke = (event) => {
+            event.preventDefault();
+            handleUploadRequest();
+          };
+          trigger.addEventListener('click', invoke);
+          trigger.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              handleUploadRequest();
             }
-            const provider = btn.dataset.provider;
-            authHint.textContent = `Redirecting to ${provider}…`;
-            await client.auth.signInWithOAuth({ provider });
           });
         });
+      };
 
-        uploadDrop.addEventListener('click', requestAuth);
-        uploadDrop.addEventListener('keypress', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            requestAuth();
-          }
+      const updateAuthState = (session) => {
+        currentSession = session;
+        if (!session) {
+          signOutButton.hidden = true;
+          toggleUserPill(false);
+          setUploadStatus('Sign in to upload your first reel.');
+          setUploadToolsEnabled(false);
+          setFormStatus(localUploadStatus, '');
+          setFormStatus(urlUploadStatus, '');
+          closeProfilePage();
+          if (profilePlan) profilePlan.textContent = 'TRIAL';
+          if (profilePlanValidity) profilePlanValidity.textContent = '—';
+          if (profileStatus) profileStatus.textContent = 'Signed out';
+          if (profileName) profileName.textContent = '—';
+          if (profileEmail) profileEmail.textContent = '—';
+          if (profileLastLogin) profileLastLogin.textContent = '—';
+          if (profileUploadsCount) profileUploadsCount.textContent = '0';
+          if (profileTrialRemaining) profileTrialRemaining.textContent = '1';
+          if (profileNextBilling) profileNextBilling.textContent = 'When you upgrade';
+          profileSignOutButton?.setAttribute('disabled', 'true');
+          currentConversions = [];
+          renderConversions([], false);
+          return;
+        }
+        const email = session.user?.email ?? 'your account';
+        const displayName = getDisplayName(session.user);
+        const { displayPlan, validUntilLabel } = getPlanDetails(session.user);
+        const usageStats = getUsageStats(session.user, { displayPlan, validUntilLabel });
+        const conversions = getConvertedVideos(session.user, { displayPlan, validUntilLabel });
+        signOutButton.hidden = false;
+        toggleUserPill(true);
+        if (userNameLabel) userNameLabel.textContent = displayName;
+        if (userAvatar) userAvatar.textContent = getInitials(displayName);
+        if (profilePlan) profilePlan.textContent = displayPlan;
+        if (profilePlanValidity) profilePlanValidity.textContent = validUntilLabel;
+        if (profileStatus) profileStatus.textContent = 'Active';
+        if (profileName) profileName.textContent = displayName;
+        if (profileEmail) profileEmail.textContent = email;
+        if (profileLastLogin) profileLastLogin.textContent = formatLastLogin(session.user?.last_sign_in_at);
+        if (profileUploadsCount) profileUploadsCount.textContent = usageStats.uploads;
+        if (profileTrialRemaining) profileTrialRemaining.textContent = usageStats.remainingTrial;
+        if (profileNextBilling) profileNextBilling.textContent = usageStats.nextBilling;
+        profileSignOutButton?.removeAttribute('disabled');
+        setUploadToolsEnabled(true);
+        setUploadStatus('Ready for your next upload. Drop a video to start processing.', 'success');
+        currentConversions = Array.isArray(conversions) ? conversions : [];
+        renderConversions(currentConversions, true);
+      };
+
+      const initializeAuth = async () => {
+        trapUploadTriggers();
+        if (!supabase) {
+          setUploadStatus('Add your Supabase credentials to enable uploads.', 'error');
+          setUploadToolsEnabled(false);
+          return;
+        }
+
+        await handleOAuthRedirect();
+
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
+        updateAuthState(session);
+
+        supabase.auth.onAuthStateChange((_event, currentSession) => {
+          updateAuthState(currentSession);
+          if (currentSession) toggleModal(false);
+        });
+      };
+
+      authForm?.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        if (!supabase) {
+          setAuthMessage('Add Supabase credentials to continue.', 'error');
+          return;
+        }
+        const formData = new FormData(authForm);
+        const email = formData.get('email');
+        setAuthMessage('Sending magic link...');
+
+        const { error } = await supabase.auth.signInWithOtp({
+          email,
+          options: {
+            shouldCreateUser: true,
+            emailRedirectTo: redirectUrl,
+          },
         });
 
-        uploadDrop.addEventListener('dragover', (e) => {
-          e.preventDefault();
-          uploadDrop.classList.add('dragging');
-        });
+        if (error) {
+          setAuthMessage(error.message, 'error');
+          return;
+        }
 
-        uploadDrop.addEventListener('dragleave', () => uploadDrop.classList.remove('dragging'));
-
-        uploadDrop.addEventListener('drop', (e) => {
-          e.preventDefault();
-          uploadDrop.classList.remove('dragging');
-          requestAuth().then((ok) => ok && handleFiles(e.dataTransfer.files));
-        });
-
-        uploadInput.addEventListener('change', (e) => handleFiles(e.target.files));
-        authClose.addEventListener('click', () => toggleModal(false));
-        authModal.addEventListener('click', (e) => {
-          if (e.target === authModal) toggleModal(false);
-        });
-
-        setStatus(supabaseReady ? 'Sign in to upload your video' : 'Add Supabase keys to enable uploads');
-        authHint.textContent = supabaseReady
-          ? 'Choose Gmail, Facebook, or Instagram to continue.'
-          : 'Add your Supabase URL and anon key to enable auth.';
+        setAuthMessage('Check your inbox for the magic link.', 'success');
       });
+
+      const initOAuthButtons = () => {
+        oauthButtons.forEach((button) => {
+          const provider = button.dataset.oauthProvider;
+          const disabled = button.dataset.disabled === 'true';
+          if (disabled) {
+            button.addEventListener('click', () => {
+              setAuthMessage('Instagram login is not available through Supabase yet.', 'error');
+            });
+            return;
+          }
+          button.addEventListener('click', async () => {
+            if (!supabase) {
+              setAuthMessage('Add Supabase credentials to continue.', 'error');
+              return;
+            }
+            setAuthMessage(`Redirecting to ${provider}...`);
+            const { error } = await supabase.auth.signInWithOAuth({
+              provider,
+              options: {
+                redirectTo: redirectUrl,
+              },
+            });
+            if (error) {
+              setAuthMessage(error.message, 'error');
+            }
+          });
+        });
+      };
+
+      const handleSignOut = async () => {
+        if (!supabase) return;
+        await supabase.auth.signOut();
+        toggleModal(false);
+      };
+
+      closeModalButton?.addEventListener('click', () => toggleModal(false));
+      authModal?.addEventListener('click', (event) => {
+        if (event.target === authModal) toggleModal(false);
+      });
+
+      uploadDrop?.addEventListener('dragover', (event) => {
+        event.preventDefault();
+      });
+
+      uploadDrop?.addEventListener('drop', async (event) => {
+        event.preventDefault();
+        if (!currentSession) {
+          handleUploadRequest();
+          return;
+        }
+        const file = event.dataTransfer?.files?.[0];
+        if (!file) {
+          setUploadStatus('No video detected in that drop.', 'error');
+          return;
+        }
+        await startLocalUpload(file);
+      });
+
+      heroFileInput?.addEventListener('change', async (event) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+        if (!currentSession) {
+          heroFileInput.value = '';
+          handleUploadRequest();
+          return;
+        }
+        await startLocalUpload(file);
+        heroFileInput.value = '';
+      });
+
+      localUploadForm?.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        if (!currentSession) {
+          setFormStatus(localUploadStatus, 'Sign in to upload a video.', 'error');
+          handleUploadRequest();
+          return;
+        }
+        const file = localUploadInput?.files?.[0];
+        if (!file) {
+          setFormStatus(localUploadStatus, 'Select a video file first.', 'error');
+          return;
+        }
+        await startLocalUpload(file);
+      });
+
+      urlUploadForm?.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        if (!currentSession) {
+          setFormStatus(urlUploadStatus, 'Sign in to import a video.', 'error');
+          handleUploadRequest();
+          return;
+        }
+        const value = urlUploadInput?.value?.trim();
+        if (!value || !isValidVideoUrl(value)) {
+          setFormStatus(urlUploadStatus, 'Enter a valid https:// video link.', 'error');
+          return;
+        }
+        setFormStatus(urlUploadStatus, 'Fetching video...');
+        setUploadStatus('Fetching video link...', 'success');
+        await processUrlUpload(value);
+      });
+
+      userPill?.addEventListener('click', (event) => {
+        event.preventDefault();
+        if (!currentSession) {
+          handleUploadRequest();
+          return;
+        }
+        openProfilePage();
+      });
+
+      const resetUrlStatus = () => setFormStatus(urlUploadStatus, '');
+      const resetLocalStatus = () => setFormStatus(localUploadStatus, '');
+
+      urlUploadInput?.addEventListener('input', resetUrlStatus);
+      localUploadInput?.addEventListener('input', resetLocalStatus);
+
+      const signOutTargets = [signOutButton, profileSignOutButton];
+      signOutTargets.forEach((button) => {
+        button?.addEventListener('click', handleSignOut);
+      });
+
+      closeProfilePageButton?.addEventListener('click', closeProfilePage);
+      profilePage?.addEventListener('click', (event) => {
+        if (event.target === profilePage) {
+          closeProfilePage();
+        }
+      });
+
+      initializeAuth();
+      initOAuthButtons();
     </script>
   </body>
 </html>

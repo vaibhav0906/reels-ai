@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HindiClip — Complete your payment</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="payment-body">
+    <main class="payment-shell">
+      <header class="payment-header">
+        <a class="back-link" href="index.html">← Back to HindiClip</a>
+        <h1>Choose how you’d like to pay</h1>
+        <p>
+          Pay in INR using your favorite UPI app. Once you’re done, drop the payment reference ID
+          and we’ll switch on your HindiClip plan right away.
+        </p>
+      </header>
+      <section class="payment-panel">
+        <div class="payment-card">
+          <div class="payment-card-header">
+            <div>
+              <p class="payment-tag" id="payment-plan-badge">Monthly</p>
+              <h2 id="payment-plan-title">HindiClip Monthly</h2>
+            </div>
+            <p class="payment-amount" id="payment-plan-amount">₹500</p>
+          </div>
+          <ul class="payment-summary">
+            <li>
+              <span>Videos included</span>
+              <strong id="payment-plan-limit">Unlimited uploads</strong>
+            </li>
+            <li>
+              <span>Billing cadence</span>
+              <strong id="payment-plan-cadence">Monthly</strong>
+            </li>
+            <li>
+              <span>Discount</span>
+              <strong id="payment-plan-discount">—</strong>
+            </li>
+          </ul>
+          <div class="aggregator-note">
+            <p>
+              We’re rolling out the official PhonePe payment link for HindiClip. Until that goes
+              live, just use the UPI details below—it takes less than a minute and works with
+              PhonePe, Google Pay, Paytm, and every other UPI app.
+            </p>
+          </div>
+        </div>
+        <div class="payment-card">
+          <h3>Pay with any UPI app</h3>
+          <p class="payment-card-helper">
+            Scan the QR or copy the UPI ID. Use PhonePe, Google Pay, Paytm, BHIM, or whichever app you love.
+          </p>
+          <div class="upi-grid">
+            <div class="qr-block">
+              <div class="qr-placeholder" aria-hidden="true">UPI QR</div>
+              <p class="qr-note">Scan to pay via any UPI app</p>
+            </div>
+            <div class="upi-actions">
+              <label class="auth-label" for="upi-id">UPI ID</label>
+              <div class="upi-row">
+                <input type="text" id="upi-id" value="hindiclip@icici" readonly />
+                <button type="button" class="secondary" id="copy-upi">Copy</button>
+              </div>
+              <button type="button" class="primary full-width" id="open-upi-intent">
+                Open in UPI app
+              </button>
+              <p class="form-status" id="upi-status" role="status"></p>
+            </div>
+          </div>
+        </div>
+        <div class="payment-card">
+          <h3>Manual confirmation</h3>
+              <p class="payment-card-helper">
+                After paying, pop in the UPI reference ID below. We’ll check it and unlock your
+                plan within a few minutes.
+              </p>
+          <form class="payment-form" id="payment-confirm-form">
+            <label class="auth-label" for="payer-email">Email</label>
+            <input type="email" id="payer-email" name="email" placeholder="you@example.com" required />
+            <label class="auth-label" for="upi-reference">UPI reference ID</label>
+            <input
+              type="text"
+              id="upi-reference"
+              name="upi-reference"
+              placeholder="e.g. T123456789@okaxis"
+              required
+            />
+            <button type="submit" class="primary full-width">Notify HindiClip</button>
+            <p class="form-status" id="payment-confirm-status" role="status"></p>
+          </form>
+        </div>
+      </section>
+    </main>
+    <script>
+      const planMap = {
+        trial: {
+          title: 'HindiClip Trial',
+          badge: 'Trial plan',
+          amount: '₹0',
+          limit: '1 video total',
+          cadence: 'Single clip',
+          discount: 'Always free',
+          upiAmount: 0,
+        },
+        monthly: {
+          title: 'HindiClip Monthly',
+          badge: 'Monthly plan',
+          amount: '₹500',
+          limit: 'Unlimited uploads',
+          cadence: 'Monthly billing',
+          discount: 'Standard pricing',
+          upiAmount: 500,
+        },
+        yearly: {
+          title: 'HindiClip Yearly',
+          badge: 'Yearly plan',
+          amount: '₹5,400',
+          limit: 'Unlimited uploads',
+          cadence: 'Yearly billing',
+          discount: '10% off vs monthly',
+          upiAmount: 5400,
+        },
+      };
+
+      const params = new URLSearchParams(window.location.search);
+      const planKey = params.get('plan')?.toLowerCase() || 'monthly';
+      const plan = planMap[planKey] || planMap.monthly;
+
+      const planTitleEl = document.getElementById('payment-plan-title');
+      const planBadgeEl = document.getElementById('payment-plan-badge');
+      const planAmountEl = document.getElementById('payment-plan-amount');
+      const planLimitEl = document.getElementById('payment-plan-limit');
+      const planCadenceEl = document.getElementById('payment-plan-cadence');
+      const planDiscountEl = document.getElementById('payment-plan-discount');
+      const upiStatusEl = document.getElementById('upi-status');
+
+      planTitleEl.textContent = plan.title;
+      planBadgeEl.textContent = plan.badge;
+      planAmountEl.textContent = plan.amount;
+      planLimitEl.textContent = plan.limit;
+      planCadenceEl.textContent = plan.cadence;
+      planDiscountEl.textContent = plan.discount;
+
+      const copyButton = document.getElementById('copy-upi');
+      const upiInput = document.getElementById('upi-id');
+      const upiIntentButton = document.getElementById('open-upi-intent');
+      const confirmForm = document.getElementById('payment-confirm-form');
+      const confirmStatus = document.getElementById('payment-confirm-status');
+
+      copyButton?.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(upiInput.value);
+          upiStatusEl.textContent = 'UPI ID copied!';
+          upiStatusEl.classList.add('success');
+        } catch (error) {
+          upiStatusEl.textContent = 'Copy failed. Please copy manually.';
+          upiStatusEl.classList.add('error');
+        }
+      });
+
+      const getUpiDeepLink = () => {
+        const amountParam = `pa=${encodeURIComponent(upiInput.value)}&pn=HindiClip&am=${plan.upiAmount}`;
+        return `upi://pay?${amountParam}&cu=INR&tn=${encodeURIComponent(plan.title)}`;
+      };
+
+      upiIntentButton?.addEventListener('click', () => {
+        const link = getUpiDeepLink();
+        window.location.href = link;
+      });
+
+      confirmForm?.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const formData = new FormData(confirmForm);
+        const email = formData.get('email');
+        const reference = formData.get('upi-reference');
+        confirmStatus.textContent = 'Thanks! We will verify and activate within 5 minutes.';
+        confirmStatus.classList.add('success');
+        confirmForm.reset();
+        console.log('UPI confirmation submitted', { plan: planKey, email, reference });
+      });
+    </script>
+  </body>
+</html>
