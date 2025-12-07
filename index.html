@@ -63,8 +63,7 @@
             </p>
           </div>
         </div>
-        <div class="hero-card" id="upload">
-          <div class="card-header">Upload & auto-convert</div>
+          <div class="hero-card hero-card--glow" id="upload">
           <div class="card-body upload-card">
             <input type="file" id="upload-input" hidden accept="video/*" />
             <div
@@ -85,10 +84,16 @@
               </ul>
             </div>
             <div class="upload-state">
-              <p class="upload-status" id="upload-status" role="status">
-                Sign in to upload your first reel.
-              </p>
               <button type="button" class="text-button" id="sign-out" hidden>Sign out</button>
+              <div class="upload-progress" id="upload-progress" hidden>
+                <div class="progress-bar">
+                  <div class="progress-fill" id="upload-progress-fill"></div>
+                </div>
+                <p class="progress-label" id="upload-progress-label">Preparing upload…</p>
+              </div>
+              <a id="upload-download-link" class="download-pill" href="#" hidden
+                >Download latest reel</a
+              >
             </div>
           </div>
           <div class="card-cta-group">
@@ -172,99 +177,57 @@
           </p>
         </div>
         <div class="profile-grid">
-          <article class="profile-card">
-            <h3>Plan details</h3>
-            <dl class="profile-details">
+          <article class="profile-card profile-card--compact">
+            <div class="profile-summary">
               <div>
-                <dt>Plan type</dt>
-                <dd id="profile-plan">TRIAL</dd>
+                <p class="profile-label">Plan</p>
+                <strong id="profile-plan">TRIAL</strong>
               </div>
               <div>
-                <dt>Valid till</dt>
-                <dd id="profile-plan-validity">—</dd>
+                <p class="profile-label">Status</p>
+                <strong id="profile-status">Signed out</strong>
               </div>
               <div>
-                <dt>Status</dt>
-                <dd id="profile-status">Signed out</dd>
+                <p class="profile-label">Valid till</p>
+                <strong id="profile-plan-validity">—</strong>
               </div>
-            </dl>
-            <button type="button" class="secondary full-width" id="profile-sign-out" disabled>
-              Sign out
-            </button>
-          </article>
-          <article class="profile-card">
-            <h3>Account info</h3>
-            <dl class="profile-details">
+            </div>
+            <div class="profile-summary">
               <div>
-                <dt>Name</dt>
-                <dd id="profile-name">—</dd>
+                <p class="profile-label">Name</p>
+                <strong id="profile-name">—</strong>
               </div>
               <div>
-                <dt>Email</dt>
-                <dd id="profile-email">—</dd>
+                <p class="profile-label">Email</p>
+                <strong id="profile-email">—</strong>
               </div>
               <div>
-                <dt>Last signed in</dt>
-                <dd id="profile-last-login">—</dd>
+                <p class="profile-label">Last sign in</p>
+                <strong id="profile-last-login">—</strong>
               </div>
-            </dl>
-          </article>
-          <article class="profile-card">
-            <h3>Upload tools</h3>
-            <p class="profile-card-helper">
-              Select a local file or paste a public video URL. We’ll queue it instantly for HindiClip.
-            </p>
-            <form id="local-upload-form" class="upload-form">
-              <label for="local-upload-input" class="file-input-label">
-                Choose a video file
-              </label>
-              <input
-                type="file"
-                id="local-upload-input"
-                accept="video/*"
-                required
-                disabled
-              />
-              <button type="submit" class="primary full-width" disabled>
-                Upload from device
-              </button>
-              <p class="form-status" id="local-upload-status" role="status"></p>
-            </form>
-            <form id="url-upload-form" class="upload-form">
-              <label class="auth-label" for="url-upload-input">Video URL</label>
-              <input
-                type="url"
-                id="url-upload-input"
-                name="video-url"
-                placeholder="https://example.com/video.mp4"
-                required
-                disabled
-              />
-              <button type="submit" class="secondary full-width" disabled>
-                Fetch video
-              </button>
-              <p class="form-status" id="url-upload-status" role="status"></p>
-            </form>
-          </article>
-          <article class="profile-card">
-            <h3>Usage summary</h3>
-            <ul class="profile-usage">
-              <li>
-                <span>Uploads this month</span>
+            </div>
+            <div class="profile-summary">
+              <div>
+                <p class="profile-label">Uploads this month</p>
                 <strong id="profile-uploads-count">0</strong>
-              </li>
-              <li>
-                <span>Remaining trial clips</span>
+              </div>
+              <div>
+                <p class="profile-label">Trial remaining</p>
                 <strong id="profile-trial-remaining">1</strong>
-              </li>
-              <li>
-                <span>Next billing</span>
+              </div>
+              <div>
+                <p class="profile-label">Next billing</p>
                 <strong id="profile-next-billing">When you upgrade</strong>
-              </li>
-            </ul>
-            <button type="button" class="primary full-width" data-upload-trigger="true">
-              Upgrade plan
-            </button>
+              </div>
+            </div>
+            <div class="profile-actions">
+              <button type="button" class="secondary" id="profile-sign-out" disabled>
+                Sign out
+              </button>
+              <button type="button" class="primary" data-upload-trigger="true">
+                Upgrade plan
+              </button>
+            </div>
           </article>
         </div>
         <div class="profile-conversions">
@@ -458,41 +421,6 @@
       </div>
     </section>
 
-    <section class="faq" id="faq">
-      <div class="section-heading">
-        <h2>Frequently asked questions</h2>
-      </div>
-      <div class="faq-items">
-        <details>
-          <summary>Can I use my own footage?</summary>
-          <p>
-            Absolutely. Upload raw footage and HindiClip will auto-find the best
-            15–60s sections and caption them for you.
-          </p>
-        </details>
-        <details>
-          <summary>Do I need to install any software?</summary>
-          <p>
-            Nope. Just upload your video inside HindiClip and we take care of the clipping,
-            captions, and exports in the cloud.
-          </p>
-        </details>
-        <details>
-          <summary>How long does rendering take?</summary>
-          <p>
-            Most projects render in under five minutes, so you can post before the day ends.
-          </p>
-        </details>
-        <details>
-          <summary>Can I collaborate with my team?</summary>
-          <p>
-            Yes. Studio and Enterprise plans include team seats, approvals, and
-            brand kits.
-          </p>
-        </details>
-      </div>
-    </section>
-
     <footer class="footer">
       <div class="footer-content">
         <div>
@@ -575,6 +503,8 @@
       </div>
     </div>
 
+    <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
     <script type="module">
       import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.44.2';
 
@@ -586,6 +516,7 @@
       const redirectUrl = `${window.location.origin}${window.location.pathname}`;
       const hasValidSupabaseConfig = SUPABASE_URL && SUPABASE_ANON_KEY;
       const supabase = hasValidSupabaseConfig ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+      const authEnabled = Boolean(supabase);
 
       const uploadTriggers = document.querySelectorAll('[data-upload-trigger]');
       const uploadDrop = document.querySelector('.upload-drop');
@@ -622,7 +553,120 @@
       const urlUploadInput = document.getElementById('url-upload-input');
       const urlUploadStatus = document.getElementById('url-upload-status');
       const urlUploadButton = urlUploadForm?.querySelector('button[type="submit"]');
+      const uploadProgress = document.getElementById('upload-progress');
+      const uploadProgressFill = document.getElementById('upload-progress-fill');
+      const uploadProgressLabel = document.getElementById('upload-progress-label');
+      const uploadDownloadLink = document.getElementById('upload-download-link');
       let currentSession = null;
+      const isUploadAllowed = () => (authEnabled ? Boolean(currentSession) : false);
+      const toastContainer = document.getElementById('toast-container');
+
+      const uploadProgressStages = [
+        { value: 1, label: 'Queued upload…' },
+        { value: 12, label: 'Uploading video…' },
+        { value: 35, label: 'Listening in Hindi…' },
+        { value: 55, label: 'Hunting the hooks…' },
+        { value: 78, label: 'Rendering captions…' },
+        { value: 92, label: 'Packaging your reel…' },
+      ];
+      let uploadProgressTimers = [];
+      let uploadProgressHideTimer = null;
+      let uploadLongWaitTimer = null;
+
+      const clearUploadProgressTimers = () => {
+        uploadProgressTimers.forEach((timer) => clearTimeout(timer));
+        uploadProgressTimers = [];
+        if (uploadProgressHideTimer) {
+          clearTimeout(uploadProgressHideTimer);
+          uploadProgressHideTimer = null;
+        }
+        if (uploadLongWaitTimer) {
+          clearTimeout(uploadLongWaitTimer);
+          uploadLongWaitTimer = null;
+        }
+      };
+
+      const resetUploadProgress = () => {
+        clearUploadProgressTimers();
+        if (uploadProgressFill) uploadProgressFill.style.width = '0%';
+        if (uploadProgressLabel) uploadProgressLabel.textContent = '';
+        if (uploadProgress) uploadProgress.hidden = true;
+      };
+
+      const setUploadProgress = (value = 0, label = '') => {
+        if (!uploadProgress || !uploadProgressFill) return;
+        uploadProgress.hidden = false;
+        const safeValue = Math.max(0, Math.min(100, value));
+        uploadProgressFill.style.width = `${safeValue}%`;
+        if (uploadProgressLabel) uploadProgressLabel.textContent = label;
+      };
+
+      const startUploadProgress = () => {
+        if (!uploadProgress) return;
+        resetUploadProgress();
+        setUploadProgress(1, 'Queued upload…');
+        uploadProgressStages.forEach((stage, index) => {
+          const timer = window.setTimeout(() => {
+            setUploadProgress(stage.value, stage.label);
+          }, (index + 1) * 4000);
+          uploadProgressTimers.push(timer);
+        });
+        // Safety net: after ~30s, reassure the user we’re still working in Supabase backend.
+        uploadLongWaitTimer = window.setTimeout(() => {
+          setUploadProgress(
+            96,
+            "We’ll let you know once we convert your reel. Uploading to Supabase backend…"
+          );
+        }, 30000);
+      };
+
+      const completeUploadProgress = () => {
+        if (!uploadProgress) return;
+        clearUploadProgressTimers();
+        setUploadProgress(100, 'Download ready!');
+        uploadProgressHideTimer = window.setTimeout(() => {
+          resetUploadProgress();
+        }, 2500);
+      };
+
+      const failUploadProgress = (message) => {
+        if (!uploadProgress) return;
+        clearUploadProgressTimers();
+        setUploadProgress(0, message || 'Upload failed. Try again.');
+        uploadProgressHideTimer = window.setTimeout(() => {
+          resetUploadProgress();
+        }, 3000);
+      };
+
+      const toAbsoluteUrl = (value = '') => {
+        if (!value) return '';
+        if (value.startsWith('http')) return value;
+        const normalized = value.startsWith('/') ? value : `/${value}`;
+        return `${window.location.origin}${normalized}`;
+      };
+
+      const showDownloadLink = (url, label = 'Download reel') => {
+        if (!uploadDownloadLink) return;
+        if (!url) {
+          uploadDownloadLink.hidden = true;
+          uploadDownloadLink.removeAttribute('href');
+          uploadDownloadLink.removeAttribute('download');
+          return;
+        }
+        const absoluteUrl = toAbsoluteUrl(url);
+        uploadDownloadLink.hidden = false;
+        uploadDownloadLink.href = absoluteUrl;
+        uploadDownloadLink.textContent = label;
+        const sanitizedName = label?.replace(/\s+/g, '_') || 'hindiclip_output.mp4';
+        uploadDownloadLink.setAttribute('download', sanitizedName);
+      };
+
+      const hideDownloadLink = () => {
+        if (!uploadDownloadLink) return;
+        uploadDownloadLink.hidden = true;
+        uploadDownloadLink.removeAttribute('href');
+        uploadDownloadLink.removeAttribute('download');
+      };
       const fallbackConversions = [
         {
           id: 'hc-001',
@@ -652,7 +696,7 @@
       let currentConversions = [];
       const addConversionRecord = (record) => {
         currentConversions = [record, ...currentConversions].slice(0, 10);
-        renderConversions(currentConversions, Boolean(currentSession));
+        renderConversions(currentConversions, isUploadAllowed());
       };
       const updateConversionRecord = (id, updates) => {
         let hasChanges = false;
@@ -662,7 +706,7 @@
           return { ...item, ...updates };
         });
         if (hasChanges) {
-          renderConversions(currentConversions, Boolean(currentSession));
+          renderConversions(currentConversions, isUploadAllowed());
         }
       };
 
@@ -671,12 +715,22 @@
         window.history.replaceState({}, document.title, redirectUrl);
       };
 
-      const setUploadStatus = (message, variant = 'muted') => {
-        if (!uploadStatus) return;
-        uploadStatus.textContent = message;
-        uploadStatus.classList.remove('success', 'error');
-        if (variant === 'success') uploadStatus.classList.add('success');
-        if (variant === 'error') uploadStatus.classList.add('error');
+      const createToast = (message, variant = 'default', timeout = 3000) => {
+        if (!toastContainer) return;
+        const toast = document.createElement('div');
+        toast.className = `toast ${variant}`;
+        toast.innerHTML = `
+          <span>${message}</span>
+          <button type="button" aria-label="Dismiss">×</button>
+        `;
+        const dismiss = () => {
+          toast.remove();
+        };
+        toast.querySelector('button')?.addEventListener('click', dismiss);
+        toastContainer.appendChild(toast);
+        if (timeout > 0) {
+          setTimeout(dismiss, timeout);
+        }
       };
 
       const setAuthMessage = (message = '', variant) => {
@@ -741,6 +795,11 @@
       };
 
       setUploadToolsEnabled(false);
+      resetUploadProgress();
+      hideDownloadLink();
+        if (!authEnabled) {
+          createToast('Add your Supabase credentials to enable uploads.', 'error');
+        }
 
       const formatFileSize = (bytes = 0) => {
         if (!Number.isFinite(bytes)) return '0 B';
@@ -755,47 +814,166 @@
         return `${size.toFixed(precision)} ${units[index]}`;
       };
 
-      const startLocalUpload = (file) => {
+      const formatDurationLabel = (seconds = 0) => {
+        if (!Number.isFinite(seconds) || seconds <= 0) return '—';
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60)
+          .toString()
+          .padStart(2, '0');
+        return `${mins}:${secs}`;
+      };
+
+      const getDownloadTarget = (payload = {}) => {
+        if (payload?.compilation?.url) {
+          return {
+            url: payload.compilation.url,
+            filename: payload.compilation.file || 'HINDI_SHORTS_COMPILATION.mp4',
+          };
+        }
+        const firstClip = payload?.clips?.[0];
+        if (firstClip?.url) {
+          return {
+            url: firstClip.url,
+            filename: firstClip.file || 'HINDICLIP_CLIP.mp4',
+          };
+        }
+        return null;
+      };
+
+      const triggerAutoDownload = (target) => {
+        if (!target?.url) return;
+        const anchor = document.createElement('a');
+        anchor.href = toAbsoluteUrl(target.url);
+        if (target.filename) {
+          anchor.download = target.filename;
+        }
+        anchor.style.display = 'none';
+        document.body.appendChild(anchor);
+        anchor.click();
+        document.body.removeChild(anchor);
+      };
+
+      const uploadVideoFile = async (file) => {
+        const formData = new FormData();
+        formData.append('video', file, file.name || 'upload.mp4');
+        const response = await fetch('/api/process-video', {
+          method: 'POST',
+          body: formData,
+        });
+        let payload = {};
+        try {
+          payload = await response.json();
+        } catch (error) {
+          console.error('Failed to parse response', error);
+        }
+        if (!response.ok) {
+          const message = payload?.error || 'Processing failed. Please try again.';
+          const error = new Error(message);
+          error.status = response.status;
+          error.payload = payload;
+          throw error;
+        }
+        return payload;
+      };
+
+      const startLocalUpload = async (file) => {
         if (!file) return;
         const maxSize = 2 * 1024 * 1024 * 1024;
         if (file.size > maxSize) {
-          setFormStatus(localUploadStatus, 'Please choose a video under 2 GB.', 'error');
-          setUploadStatus('Please choose a video under 2 GB.', 'error');
+        setFormStatus(localUploadStatus, 'Please choose a video under 2 GB.', 'error');
+        createToast('Please choose a video under 2 GB.', 'error');
+          hideDownloadLink();
+          resetUploadProgress();
           return;
         }
+        hideDownloadLink();
+        startUploadProgress();
         const sizeLabel = formatFileSize(file.size);
         setFormStatus(localUploadStatus, `Uploading ${file.name} (${sizeLabel})...`);
-        setUploadStatus(`Uploading ${file.name} (${sizeLabel})...`, 'success');
+        createToast(`Uploading ${file.name} (${sizeLabel})`, 'success');
         const jobId = `local-${Date.now()}`;
         addConversionRecord({
           id: jobId,
           title: file.name,
           platform: 'Local upload',
-          duration: '0:45',
-          status: 'Queued',
+          duration: 'Rendering…',
+          status: 'Processing',
           finishedAt: new Date().toISOString(),
+          downloadUrl: null,
         });
-        return new Promise((resolve) => {
-          setTimeout(() => {
-            const email = currentSession?.user?.email || 'you';
+        try {
+          const payload = await uploadVideoFile(file);
+          const clipCount = payload?.clips?.length || 0;
+          const clipLabel = clipCount === 1 ? 'clip' : 'clips';
+          const compilationNote = payload?.compilation ? ' + compilation' : '';
+          const downloadTarget = getDownloadTarget(payload);
+          const downloadUrl =
+            downloadTarget?.url || payload?.clips?.[0]?.url || null;
+          const resolvedDownloadUrl = downloadUrl ? toAbsoluteUrl(downloadUrl) : '';
+          setFormStatus(
+            localUploadStatus,
+            `Processing complete. ${clipCount} ${clipLabel}${compilationNote} ready in outputs/. Starting download...`,
+            'success'
+          );
+          createToast(
+            downloadTarget
+              ? `Finished ${file.name}. Downloading ${downloadTarget.filename || 'your reel'}...`
+              : `Finished ${file.name}. Download your files under outputs/.`,
+            'success'
+          );
+          if (localUploadInput) localUploadInput.value = '';
+          updateConversionRecord(jobId, {
+            status: 'Completed',
+            finishedAt: new Date().toISOString(),
+            platform: 'HindiClip render',
+            duration: formatDurationLabel(payload?.compilation?.duration || payload?.videoDuration),
+            downloadUrl: resolvedDownloadUrl || null,
+            downloadLabel: downloadTarget?.filename || 'Download output',
+          });
+          completeUploadProgress();
+          showDownloadLink(resolvedDownloadUrl || null, downloadTarget?.filename || 'Download output');
+          if (resolvedDownloadUrl) {
+            triggerAutoDownload({ url: resolvedDownloadUrl, filename: downloadTarget?.filename });
+          }
+        } catch (error) {
+          const isTimeout = error?.status === 504 || /background/i.test(error?.message || '');
+          const message =
+            error?.message ||
+            (isTimeout
+              ? "We're still converting this reel in the backend. We'll notify you when it's ready."
+              : 'Processing failed. Please try again.');
+          if (isTimeout) {
+            setUploadProgress(
+              98,
+              "We’ll let you know once we convert your reel. Uploading to Supabase backend…"
+            );
             setFormStatus(
               localUploadStatus,
-              `Queued ${file.name}. We will email ${email} when rendering finishes.`,
+              "Still converting on the backend. We'll let you know once it’s done.",
               'success'
             );
-            setUploadStatus(
-              `Queued ${file.name}. Drop another file or import a URL while HindiClip works on it.`,
-              'success'
-            );
-            if (localUploadInput) localUploadInput.value = '';
+            createToast("Still converting on the backend. We'll notify you shortly.", 'success');
             updateConversionRecord(jobId, {
-              status: 'Completed',
+              status: 'Processing (backend)',
               finishedAt: new Date().toISOString(),
               platform: 'HindiClip render',
+              downloadUrl: null,
             });
-            resolve();
-          }, 1500);
-        });
+            // Do not throw; keep UI calm and let backend finish.
+            return;
+          }
+          setFormStatus(localUploadStatus, message, 'error');
+          createToast(message, 'error');
+          updateConversionRecord(jobId, {
+            status: 'Failed',
+            finishedAt: new Date().toISOString(),
+            platform: 'Processing error',
+            downloadUrl: null,
+          });
+          failUploadProgress(message);
+          hideDownloadLink();
+          throw error;
+        }
       };
 
       const isValidVideoUrl = (value) => {
@@ -831,7 +1009,7 @@
               `Fetched ${hostname}. We'll email ${email} when the clips are ready.`,
               'success'
             );
-            setUploadStatus('Video imported successfully. We will notify you when clips are ready.', 'success');
+            createToast('Video imported successfully. We will notify you when clips are ready.', 'success');
             if (urlUploadInput) urlUploadInput.value = '';
             updateConversionRecord(jobId, {
               status: 'Completed',
@@ -919,7 +1097,19 @@
         items.forEach((item) => {
           const li = document.createElement('li');
           li.className = 'conversion-card';
-          const statusClass = item.status?.toLowerCase() === 'queued' ? 'pending' : 'success';
+          const statusValue = `${item.status || 'Completed'}`.toLowerCase();
+          let statusClass = 'success';
+          if (statusValue === 'queued' || statusValue === 'processing') {
+            statusClass = 'pending';
+          } else if (statusValue === 'failed' || statusValue === 'error') {
+            statusClass = 'error';
+          }
+          const resolvedDownloadUrl = item.downloadUrl
+            ? toAbsoluteUrl(item.downloadUrl)
+            : '';
+          const downloadMarkup = resolvedDownloadUrl
+            ? `<div class="conversion-actions"><a class="conversion-download" href="${resolvedDownloadUrl}" download>${item.downloadLabel || 'Download'}</a></div>`
+            : '';
           li.innerHTML = `
             <div class="conversion-header">
               <p class="conversion-title">${item.title || 'Untitled video'}</p>
@@ -929,6 +1119,7 @@
               <p>${item.platform || 'Instagram Reels'} • ${item.duration || '0:45'}</p>
               <p>${formatRelativeTime(item.finishedAt)}</p>
             </div>
+            ${downloadMarkup}
           `;
           conversionList.appendChild(li);
         });
@@ -969,7 +1160,7 @@
 
       const ensureSession = async () => {
         if (currentSession) return currentSession;
-        if (!supabase) return null;
+        if (!authEnabled || !supabase) return null;
         const {
           data: { session },
         } = await supabase.auth.getSession();
@@ -1010,7 +1201,7 @@
           error,
         } = await supabase.auth.getSessionFromUrl({ storeSession: true });
         if (error) {
-          setUploadStatus('Authentication failed. Please try again.', 'error');
+        createToast('Authentication failed. Please try again.', 'error');
           setAuthMessage(error.message, 'error');
           cleanOAuthParams();
           return;
@@ -1020,13 +1211,15 @@
       };
 
       const handleUploadRequest = async () => {
-        if (!supabase) {
-          setUploadStatus('Add your Supabase credentials to enable uploads.', 'error');
+        if (!authEnabled || !supabase) {
+          createToast('Add your Supabase credentials to enable uploads.', 'error');
+          setAuthMessage('Add Supabase credentials to continue.', 'error');
+          toggleModal(true);
           return;
         }
         const session = await ensureSession();
         if (session) {
-          setUploadStatus('Ready for your next upload. Drop a video to start processing.', 'success');
+          createToast('Ready for your next upload. Drop a video to start processing.', 'success');
           heroFileInput?.click();
           return;
         }
@@ -1054,10 +1247,12 @@
         if (!session) {
           signOutButton.hidden = true;
           toggleUserPill(false);
-          setUploadStatus('Sign in to upload your first reel.');
+          createToast('Sign in to upload your first reel.', 'error');
           setUploadToolsEnabled(false);
           setFormStatus(localUploadStatus, '');
           setFormStatus(urlUploadStatus, '');
+          hideDownloadLink();
+          resetUploadProgress();
           closeProfilePage();
           if (profilePlan) profilePlan.textContent = 'TRIAL';
           if (profilePlanValidity) profilePlanValidity.textContent = '—';
@@ -1093,15 +1288,15 @@
         if (profileNextBilling) profileNextBilling.textContent = usageStats.nextBilling;
         profileSignOutButton?.removeAttribute('disabled');
         setUploadToolsEnabled(true);
-        setUploadStatus('Ready for your next upload. Drop a video to start processing.', 'success');
+        createToast('Ready for your next upload. Drop a video to start processing.', 'success');
         currentConversions = Array.isArray(conversions) ? conversions : [];
         renderConversions(currentConversions, true);
       };
 
       const initializeAuth = async () => {
         trapUploadTriggers();
-        if (!supabase) {
-          setUploadStatus('Add your Supabase credentials to enable uploads.', 'error');
+        if (!authEnabled || !supabase) {
+          createToast('Add your Supabase credentials to enable uploads.', 'error');
           setUploadToolsEnabled(false);
           return;
         }
@@ -1185,39 +1380,53 @@
         if (event.target === authModal) toggleModal(false);
       });
 
+      uploadDownloadLink?.addEventListener('click', (event) => {
+        if (!uploadDownloadLink?.href || uploadDownloadLink.href === window.location.href) {
+          event.preventDefault();
+        }
+      });
+
       uploadDrop?.addEventListener('dragover', (event) => {
         event.preventDefault();
       });
 
       uploadDrop?.addEventListener('drop', async (event) => {
         event.preventDefault();
-        if (!currentSession) {
+        if (!isUploadAllowed()) {
           handleUploadRequest();
           return;
         }
         const file = event.dataTransfer?.files?.[0];
         if (!file) {
-          setUploadStatus('No video detected in that drop.', 'error');
+        createToast('No video detected in that drop.', 'error');
           return;
         }
-        await startLocalUpload(file);
+        try {
+          await startLocalUpload(file);
+        } catch {
+          // errors handled above
+        }
       });
 
       heroFileInput?.addEventListener('change', async (event) => {
         const file = event.target.files?.[0];
         if (!file) return;
-        if (!currentSession) {
+        if (!isUploadAllowed()) {
           heroFileInput.value = '';
           handleUploadRequest();
           return;
         }
-        await startLocalUpload(file);
+        try {
+          await startLocalUpload(file);
+        } catch {
+          // errors handled above
+        }
         heroFileInput.value = '';
       });
 
       localUploadForm?.addEventListener('submit', async (event) => {
         event.preventDefault();
-        if (!currentSession) {
+        if (!isUploadAllowed()) {
           setFormStatus(localUploadStatus, 'Sign in to upload a video.', 'error');
           handleUploadRequest();
           return;
@@ -1227,12 +1436,16 @@
           setFormStatus(localUploadStatus, 'Select a video file first.', 'error');
           return;
         }
-        await startLocalUpload(file);
+        try {
+          await startLocalUpload(file);
+        } catch {
+          // errors handled above
+        }
       });
 
       urlUploadForm?.addEventListener('submit', async (event) => {
         event.preventDefault();
-        if (!currentSession) {
+        if (!isUploadAllowed()) {
           setFormStatus(urlUploadStatus, 'Sign in to import a video.', 'error');
           handleUploadRequest();
           return;
@@ -1243,13 +1456,13 @@
           return;
         }
         setFormStatus(urlUploadStatus, 'Fetching video...');
-        setUploadStatus('Fetching video link...', 'success');
+        createToast('Fetching video link...', 'success');
         await processUrlUpload(value);
       });
 
       userPill?.addEventListener('click', (event) => {
         event.preventDefault();
-        if (!currentSession) {
+        if (!isUploadAllowed()) {
           handleUploadRequest();
           return;
         }

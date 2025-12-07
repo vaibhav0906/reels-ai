@@ -54,6 +54,25 @@
           </div>
         </div>
         <div class="payment-card">
+          <h3>Pay instantly with Razorpay</h3>
+          <p class="payment-card-helper">
+            Cards, UPI, wallets, and net banking are supported. We’ll confirm the payment right
+            away.
+          </p>
+          <label class="auth-label" for="razorpay-email">Email for receipt</label>
+          <input
+            type="email"
+            id="razorpay-email"
+            name="razorpay-email"
+            placeholder="you@example.com"
+            inputmode="email"
+          />
+          <button type="button" class="primary full-width" id="razorpay-button">
+            Pay ₹<span id="razorpay-amount-label">500</span> securely
+          </button>
+          <p class="form-status" id="razorpay-status" role="status"></p>
+        </div>
+        <div class="payment-card">
           <h3>Pay with any UPI app</h3>
           <p class="payment-card-helper">
             Scan the QR or copy the UPI ID. Use PhonePe, Google Pay, Paytm, BHIM, or whichever app you love.
@@ -99,6 +118,7 @@
         </div>
       </section>
     </main>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
       const planMap = {
         trial: {
@@ -141,6 +161,10 @@
       const planCadenceEl = document.getElementById('payment-plan-cadence');
       const planDiscountEl = document.getElementById('payment-plan-discount');
       const upiStatusEl = document.getElementById('upi-status');
+      const rzpButton = document.getElementById('razorpay-button');
+      const rzpStatus = document.getElementById('razorpay-status');
+      const rzpEmail = document.getElementById('razorpay-email');
+      const rzpAmountLabel = document.getElementById('razorpay-amount-label');
 
       planTitleEl.textContent = plan.title;
       planBadgeEl.textContent = plan.badge;
@@ -148,6 +172,7 @@
       planLimitEl.textContent = plan.limit;
       planCadenceEl.textContent = plan.cadence;
       planDiscountEl.textContent = plan.discount;
+      if (rzpAmountLabel) rzpAmountLabel.textContent = plan.upiAmount;
 
       const copyButton = document.getElementById('copy-upi');
       const upiInput = document.getElementById('upi-id');
@@ -175,6 +200,77 @@
         const link = getUpiDeepLink();
         window.location.href = link;
       });
+
+      const setRzpStatus = (message = '', variant = 'muted') => {
+        if (!rzpStatus) return;
+        rzpStatus.textContent = message;
+        rzpStatus.classList.remove('success', 'error');
+        if (variant === 'success') rzpStatus.classList.add('success');
+        if (variant === 'error') rzpStatus.classList.add('error');
+      };
+
+      const createRazorpayOrder = async () => {
+        const payload = {
+          amount: plan.upiAmount,
+          plan: planKey,
+          email: rzpEmail?.value || '',
+        };
+        const response = await fetch('/api/razorpay/order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data?.error || 'Unable to start payment. Try again.');
+        }
+        return data;
+      };
+
+      const openRazorpayCheckout = async () => {
+        if (!rzpButton) return;
+        if (!window.Razorpay) {
+          setRzpStatus('Payment SDK not loaded. Please retry in a moment.', 'error');
+          return;
+        }
+        setRzpStatus('Creating Razorpay order…');
+        rzpButton.disabled = true;
+        try {
+          const order = await createRazorpayOrder();
+          const options = {
+            key: order.key,
+            order_id: order.id,
+            amount: order.amount,
+            currency: order.currency || 'INR',
+            name: 'HindiClip',
+            description: plan.title,
+            notes: order.notes || {},
+            prefill: {
+              email: rzpEmail?.value || '',
+            },
+            handler: (response) => {
+              setRzpStatus('Payment successful! Reference: ' + (response.razorpay_payment_id || ''), 'success');
+            },
+            modal: {
+              ondismiss: () => {
+                setRzpStatus('Payment window closed. You can retry anytime.', 'muted');
+              },
+            },
+            theme: {
+              color: '#0f172a',
+            },
+          };
+          const rzp = new window.Razorpay(options);
+          rzp.open();
+        } catch (error) {
+          console.error('Razorpay order error', error);
+          setRzpStatus(error?.message || 'Payment failed. Please try again.', 'error');
+        } finally {
+          rzpButton.disabled = false;
+        }
+      };
+
+      rzpButton?.addEventListener('click', openRazorpayCheckout);
 
       confirmForm?.addEventListener('submit', (event) => {
         event.preventDefault();
