@@ -1,3 +1,4 @@
 Flask>=3.0.0
 moviepy>=1.0.3
 openai-whisper>=20231117
+vercel-wsgi>=0.1.1
