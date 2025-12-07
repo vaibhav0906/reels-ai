@@ -44,6 +44,8 @@ def _ensure_directories():
     UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
+_ensure_directories()
+
 
 def _create_razorpay_order(amount_rupees: float, plan: str, email: str | None = None) -> dict:
     if not RAZORPAY_KEY_ID or not RAZORPAY_KEY_SECRET:
